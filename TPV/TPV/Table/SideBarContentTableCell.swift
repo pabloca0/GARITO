@@ -79,7 +79,7 @@ class SideBarContentTableCell: UITableViewCell {
         totalLabel = nil
     }
 
-    // Functions
+    // MARK: - Functions
 
     func show(for billRow: BillRow) {
         self.billRow = billRow
@@ -98,7 +98,7 @@ class SideBarContentTableCell: UITableViewCell {
         totalLabel.setTextWithFadeAnimation("\(self.billRow.orderedPrice.description) €")
     }
 
-    // Setup
+    // MARK: - Setup
 
     func setupView() {
         selectionStyle = .none
@@ -138,7 +138,7 @@ class SideBarContentTableCell: UITableViewCell {
         addSubview(quantitySelector)
         quantitySelector.translatesAutoresizingMaskIntoConstraints = false
         quantitySelector.delegate = self
-        quantitySelector.show(billRow.orderedQuantity)
+        quantitySelector.show(billRow.orderedQuantity, minQuantity: billRow.paidQuantity)
         setupQuantitySelectorConstraints()
     }
 

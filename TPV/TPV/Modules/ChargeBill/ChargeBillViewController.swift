@@ -7,15 +7,21 @@
 
 import UIKit
 
+protocol ChargeBillViewControllerDelegate: AnyObject {
+    func billRowsDidChange(_ billRows: [BillRow])
+}
+
 class ChargeBillViewController: UIViewController {
 
     // Properties
 
     var billRows: [BillRow] = []
+    weak var delegate: ChargeBillViewControllerDelegate?
 
     // Views
     private var titleLabel: UILabel!
     private var tableView: UITableView!
+    private var chargeButton: UIButton!
 
     // Life Cycle
 
@@ -25,11 +31,32 @@ class ChargeBillViewController: UIViewController {
         setupView()
     }
 
+    // Functions
+
+    func updateChargeButton() {
+        let billIsEmpty = billRows.filter({ $0.chargedPaidQuantity > 0 }).isEmpty
+        chargeButton.setBackgroundColorWithFadeAnimation(billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
+                                                                                            green: 72 / 255,
+                                                                                            blue: 36 / 255, alpha: 1))
+        chargeButton.isEnabled = !billIsEmpty
+    }
+
+    @objc
+    func chargeButtonTapped() {
+        billRows.enumerated().forEach({
+            billRows[$0].paidQuantity += $1.chargedPaidQuantity
+            billRows[$0].chargedPaidQuantity = 0
+        })
+        delegate?.billRowsDidChange(billRows)
+        dismiss(animated: true)
+    }
+
     // Setup
 
     func setupView() {
         view.backgroundColor = .systemGray6
         setupTitleLabel()
+        setupChargeButton()
         setupTableView()
     }
 
@@ -57,6 +84,26 @@ class ChargeBillViewController: UIViewController {
         setupTableViewConstraints()
     }
 
+    func setupChargeButton() {
+        chargeButton = UIButton()
+        view.addSubview(chargeButton)
+        chargeButton.translatesAutoresizingMaskIntoConstraints = false
+        chargeButton.setTitle("COBRAR", for: .normal)
+        chargeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16,
+                                                          weight: .semibold)
+        chargeButton.layer.cornerRadius = 60 / 2
+        let billIsEmpty = billRows.filter({ $0.chargedPaidQuantity > 0 }).isEmpty
+        chargeButton.backgroundColor = billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
+                                                                          green: 72 / 255,
+                                                                          blue: 36 / 255, alpha: 1)
+        chargeButton.isEnabled = !billIsEmpty
+        chargeButton.addTarget(self,
+                               action: #selector(chargeButtonTapped),
+                               for: .touchUpInside)
+
+        setupChargeButtonConstraints()
+    }
+
     func setupTitleLabelConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor,
@@ -66,11 +113,24 @@ class ChargeBillViewController: UIViewController {
         ])
     }
 
+    func setupChargeButtonConstraints() {
+        NSLayoutConstraint.activate([
+            chargeButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                              constant: -20),
+            chargeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                              constant: 20),
+            chargeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                              constant: -20),
+            chargeButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
     func setupTableViewConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                            constant: 10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: chargeButton.topAnchor,
+                                              constant: -20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -105,5 +165,10 @@ extension ChargeBillViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ChargeBillViewController: ChargeBillTableCellDelegate {
-    func billRowDidChange(_ billRow: BillRow) {}
+    func billRowDidChange(_ billRow: BillRow) {
+        if let rowIndex = billRows.firstIndex(where: { $0.id == billRow.id }) {
+            billRows[rowIndex] = billRow
+            updateChargeButton()
+        }
+    }
 }

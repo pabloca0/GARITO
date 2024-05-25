@@ -12,4 +12,5 @@ struct Item: Identifiable {
     let name: String
     let price: Double
     let image: UIImage?
+    let category: ItemFactory.Category
 }

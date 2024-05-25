@@ -20,6 +20,10 @@ class SideBarContentTableHeaderView: UIView {
     // Setup
 
     func setupViews() {
+        backgroundColor = UIColor(red: 179 / 255,
+                                  green: 200 / 255,
+                                  blue: 172 / 255,
+                                  alpha: 1)
         setupNameLabel()
         setupOrderedLabel()
         setupPaidLabel()

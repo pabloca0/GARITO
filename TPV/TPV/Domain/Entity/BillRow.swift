@@ -11,9 +11,10 @@ struct BillRow: Identifiable {
     let item: Item
     var orderedQuantity: Int
     var paidQuantity: Int
+    var chargedPaidQuantity: Int
 
     var pendingQuantity: Int {
-        orderedQuantity - paidQuantity
+        orderedQuantity - chargedPaidQuantity - paidQuantity
     }
 
     var orderedPrice: Double {
@@ -22,6 +23,10 @@ struct BillRow: Identifiable {
 
     var paidPrice: Double {
         (Double(paidQuantity) * item.price).round(to: 2)
+    }
+
+    var chargedPaidPrice: Double {
+        (Double(chargedPaidQuantity) * item.price).round(to: 2)
     }
 
     var pendingPrice: Double {

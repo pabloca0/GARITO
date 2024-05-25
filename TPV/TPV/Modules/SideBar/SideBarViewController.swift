@@ -12,6 +12,7 @@ class SideBarViewController: UISplitViewController {
     // Properties
 
     var bills: [Bill] = []
+    var billsSelectedTags: [UUID: SideBarContentViewController.SideBarContentTag] = [:]
     var menuViewController: SideBarMenuViewController!
     var contentViewController: SideBarContentViewController!
 
@@ -23,6 +24,12 @@ class SideBarViewController: UISplitViewController {
         setupViews()
     }
 
+    // MARK: - Functions
+
+    func getTagByBill(id: Bill.ID?)  -> SideBarContentViewController.SideBarContentTag {
+        guard let id else { return .all }
+        return billsSelectedTags[id] ?? .all
+    }
     // Setup
 
     func setupViews() {
@@ -38,7 +45,7 @@ class SideBarViewController: UISplitViewController {
 
         contentViewController = SideBarContentViewController()
         contentViewController.setAsDelegate(of: self)
-        contentViewController.show(bills.first)
+        contentViewController.show(bills.first, selectedTag: getTagByBill(id: bills.first?.id))
 
         self.viewControllers = [navController, contentViewController]
     }
@@ -48,7 +55,7 @@ class SideBarViewController: UISplitViewController {
 
 extension SideBarViewController: SideBarMenuViewControllerDelegate {
     func didSelect(_ bill: Bill) {
-        contentViewController.show(bill)
+        contentViewController.show(bill, selectedTag: getTagByBill(id: bill.id))
         showDetailViewController(contentViewController, sender: nil)
     }
 
@@ -58,7 +65,7 @@ extension SideBarViewController: SideBarMenuViewControllerDelegate {
         let billIndex = bills.firstIndex(where: { $0.id == bill.id })
         menuViewController.selectBill(at: billIndex)
 
-        contentViewController.show(bill)
+        contentViewController.show(bill, selectedTag: getTagByBill(id: bill.id))
     }
 
     func closeButtonTapped() {
@@ -70,11 +77,15 @@ extension SideBarViewController: SideBarMenuViewControllerDelegate {
 // SideBarMenuViewControllerDelegate
 
 extension SideBarViewController: SideBarContentViewControllerDelegate {
+    func selectedTagDidChange(selectedTag: SideBarContentViewController.SideBarContentTag, for billId: Bill.ID) {
+        billsSelectedTags[billId] = selectedTag
+    }
+    
     func billDidChange(_ bill: Bill) {
         if let billIndex = bills.firstIndex(where: { $0.id == bill.id }) {
             bills[billIndex] = bill
-            menuViewController.setBills(bills)
 
+            menuViewController.setBills(bills)
             let billIndex = bills.firstIndex(where: { $0.id == bill.id })
             menuViewController.selectBill(at: billIndex)
         }

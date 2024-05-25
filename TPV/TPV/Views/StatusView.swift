@@ -17,8 +17,15 @@ class StatusView: UIView {
     private var contentView = UIView()
 
     // Functions
-    func show(_ status: Bill.Status) {
-        self.status = status
+    func showWithFade(_ status: Bill.Status) {
+        UIView.transition(with: self,
+                          duration: 0.15,
+                          options: [.transitionCrossDissolve],
+                          animations: { [weak self] in
+            guard let self else { return }
+            self.status = status
+        })
+
         setupViews()
     }
 

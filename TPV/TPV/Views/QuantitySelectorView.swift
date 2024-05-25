@@ -16,6 +16,8 @@ class QuantitySelectorView: UIView {
     // Properties
     weak var delegate: QuantitySelectorDelegate?
     private var quantity: Int = 0
+    private var maxQuantity: Int = .max
+    private var minQuantity: Int = 0
 
     // Views
     let id = UUID()
@@ -26,14 +28,16 @@ class QuantitySelectorView: UIView {
 
     // Functions
 
-    func show(_ quantity: Int?) {
+    func show(_ quantity: Int?, maxQuantity: Int? = .max, minQuantity: Int? = 0) {
         self.quantity = quantity ?? 0
+        self.maxQuantity = maxQuantity ?? .max
+        self.minQuantity = minQuantity ?? 0
         setupViews()
     }
 
     @objc
     func minusButtonTapped() {
-        if quantity > 0 {
+        if quantity > minQuantity {
             quantity -= 1
             quantityLabel.setTextWithFadeAnimation(quantity.description)
             delegate?.quantityDidChange(self, to: quantity)
@@ -42,9 +46,11 @@ class QuantitySelectorView: UIView {
 
     @objc
     func plusButtonTapped() {
-        quantity += 1
-        quantityLabel.setTextWithFadeAnimation(quantity.description)
-        delegate?.quantityDidChange(self, to: quantity)
+        if quantity < maxQuantity {
+            quantity += 1
+            quantityLabel.setTextWithFadeAnimation(quantity.description)
+            delegate?.quantityDidChange(self, to: quantity)
+        }
     }
 
     // Setup

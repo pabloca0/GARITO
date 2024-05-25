@@ -9,38 +9,53 @@ import UIKit
 
 protocol SideBarContentViewControllerDelegate: AnyObject {
     func billDidChange(_ bill: Bill)
+    func selectedTagDidChange(selectedTag: SideBarContentViewController.SideBarContentTag, for billId: Bill.ID)
 }
 
-class SideBarContentViewController: UIViewController {
+final class SideBarContentViewController: UIViewController {
 
-    // Properties
+    // MARK: - Properties
+
     var bill: Bill!
-    var segmentedControlTags = [SegmentedControlTag.all, SegmentedControlTag.recorded]
-    
-    var selectedTag: SegmentedControlTag!
+    var selectedTag: SideBarContentTag = .all
     private weak var delegate: SideBarContentViewControllerDelegate?
 
-    // Views
+    private var categories: [ItemFactory.Category] {
+        return ItemFactory.getCategories(from: items)
+    }
+
+    private var items: [Item] {
+        selectedTag == .all ? bill.rows.map({ $0.item }) : bill.rows.compactMap({ $0.orderedQuantity > 0 ?  $0.item : nil})
+    }
+
+    private var categoriesStatus: [ItemFactory.Category: SideBarContentSectionHeaderView.Status] = [:]
+
+    // MARK: - Views
 
     private var nameLabel: UILabel!
     private var statusView: StatusView!
     private var totalLabel: UILabel!
     private var segmentedControl: UISegmentedControl!
+    private var tableHeaderView: SideBarContentTableHeaderView!
     private var tableView: UITableView!
     private var chargeButton: UIButton!
 
-    // Life cycle
+    // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    // Functions
+    // MARK: - Functions
 
-    func show(_ bill: Bill?) {
+    func show(_ bill: Bill?, selectedTag: SideBarContentTag) {
         resetViews()
         if let bill {
             self.bill = bill
+            self.selectedTag = selectedTag
+            categories.forEach({ category in
+                categoriesStatus[category] = .open
+            })
             setupViews()
         }
     }
@@ -63,29 +78,44 @@ class SideBarContentViewController: UIViewController {
 
     @objc
     private func segmentedControlValueDidChange() {
-        selectedTag = segmentedControlTags[segmentedControl.selectedSegmentIndex]
-        tableView.reloadSections([0], with: .fade)
+        selectedTag = SideBarContentTag.allCases[segmentedControl.selectedSegmentIndex]
+        delegate?.selectedTagDidChange(selectedTag: selectedTag, for: bill.id)
+        UIView.transition(with: tableView,
+                          duration: 0.15,
+                          options: .transitionCrossDissolve,
+                          animations: { [weak self] in
+            guard let self else { return }
+            self.tableView.reloadData()
+        })
     }
 
     @objc
     private func chargeButtonTapped() {
-        let vc = ChargeBillViewController()
-        vc.billRows = bill.rows.filter({ $0.pendingQuantity > 0 })
-        present(vc, animated: true)
+        let chargeBillVC = ChargeBillViewController()
+        chargeBillVC.delegate = self
+        let billRowsWithPending = bill.rows.filter({ $0.pendingQuantity > 0 })
+        chargeBillVC.billRows = billRowsWithPending
+        present(chargeBillVC, animated: true)
     }
 
     private func updateBill() {
         totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.totalPrice.description) €")
-        statusView.show(bill.status)
+        statusView.showWithFade(bill.status)
+        let billIsEmpty = bill.rows.filter({ $0.pendingQuantity > 0 }).isEmpty
+        chargeButton.setBackgroundColorWithFadeAnimation(billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
+                                                                                            green: 72 / 255,
+                                                                                            blue: 36 / 255, alpha: 1))
+        chargeButton.isEnabled = !billIsEmpty
     }
 
-    // Setup
+    // MARK: - Setup
 
     func setupViews() {
         setupNameLabel()
         setupStatusView()
         setupTotalLabel()
         setupSegmentedControl()
+        setupTableHeaderView()
         setupTableView()
         setupChargeButton()
     }
@@ -104,7 +134,7 @@ class SideBarContentViewController: UIViewController {
         statusView = StatusView()
         view.addSubview(statusView)
         statusView.translatesAutoresizingMaskIntoConstraints = false
-        statusView.show(bill.status)
+        statusView.showWithFade(bill.status)
         setupStatusViewConstraints()
     }
 
@@ -122,6 +152,8 @@ class SideBarContentViewController: UIViewController {
         tableView = UITableView(frame: view.bounds,
                                 style: .insetGrouped)
         view.addSubview(tableView)
+        tableView.contentInset.top = 10
+        tableView.contentInset.bottom = 40
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -133,6 +165,14 @@ class SideBarContentViewController: UIViewController {
         setupTableViewConstraints()
     }
 
+    func setupTableHeaderView() {
+        tableHeaderView = SideBarContentTableHeaderView()
+        view.addSubview(tableHeaderView)
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        tableHeaderView.setupViews()
+        setupTableHeaderViewConstraints()
+    }
+
     func setupSegmentedControl() {
         segmentedControl = UISegmentedControl()
         view.addSubview(segmentedControl)
@@ -140,15 +180,14 @@ class SideBarContentViewController: UIViewController {
         segmentedControl.addTarget(self,
                                    action: #selector(segmentedControlValueDidChange),
                                    for: .valueChanged)
-        segmentedControlTags.enumerated().forEach({
+        SideBarContentTag.allCases.enumerated().forEach({
             segmentedControl.insertSegment(withTitle: $1.title, at: $0, animated: false)
         })
-        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.selectedSegmentIndex = SideBarContentTag.allCases.firstIndex(of: selectedTag) ?? 0
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         segmentedControl.setTitleTextAttributes(titleTextAttributes, for: .normal)
         segmentedControl.setTitleTextAttributes(selectedTitleTextAttributes, for: .selected)
-        selectedTag = .all
         setupSegmentedControlConstraints()
     }
 
@@ -160,12 +199,15 @@ class SideBarContentViewController: UIViewController {
         chargeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16,
                                                           weight: .semibold)
         chargeButton.layer.cornerRadius = 60 / 2
-        chargeButton.backgroundColor = UIColor(red: 187 / 255,
-                                               green: 72 / 255,
-                                               blue: 36 / 255, alpha: 1)
+        let billIsEmpty = bill.rows.filter({ $0.pendingQuantity > 0 }).isEmpty
+        chargeButton.backgroundColor = billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
+                                                                          green: 72 / 255,
+                                                                          blue: 36 / 255, alpha: 1)
+        chargeButton.isEnabled = !billIsEmpty
         chargeButton.addTarget(self,
                                action: #selector(chargeButtonTapped),
                                for: .touchUpInside)
+
         setupChargeButtonConstraints()
     }
 
@@ -196,6 +238,18 @@ class SideBarContentViewController: UIViewController {
         ])
     }
 
+    func setupTableHeaderViewConstraints() {
+        NSLayoutConstraint.activate([
+            tableHeaderView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor,
+                                                    constant: 10),
+            tableHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                     constant: 16),
+            tableHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant: -16),
+            tableHeaderView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+
     func setupSegmentedControlConstraints() {
         NSLayoutConstraint.activate([
             segmentedControl.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
@@ -205,7 +259,7 @@ class SideBarContentViewController: UIViewController {
 
     func setupTableViewConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+            tableView.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -225,14 +279,24 @@ class SideBarContentViewController: UIViewController {
 }
 
 extension SideBarContentViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        categories.count
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedTag == .all ? bill.rows.count : bill.rows.filter({ $0.orderedQuantity > 0 }).count
+        let sectionCategory = categories[section]
+        if categoriesStatus[sectionCategory] == .collapsed { return 0 }
+        return items.filter({ sectionCategory == $0.category }).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let arrayData = selectedTag == .all ? bill.rows : bill.rows.filter({ $0.orderedQuantity > 0 })
         let cell = tableView.dequeueReusableCell(withIdentifier: SideBarContentTableCell.description(), for: indexPath) as! SideBarContentTableCell
-        let billRow = arrayData[indexPath.row]
+
+
+        let items = items.filter({ categories[indexPath.section] == $0.category })
+        let showingItem = items[indexPath.row]
+
+        guard let billRow = bill.rows.first(where: { $0.item.id == showingItem.id }) else { fatalError() }
         cell.show(for: billRow)
         cell.setAsDelegate(of: self)
         return cell
@@ -243,23 +307,17 @@ extension SideBarContentViewController: UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = SideBarContentTableHeaderView()
-        view.setupViews()
-        return view
+        let header = SideBarContentSectionHeaderView()
+        
+        let category = categories[section]
+
+        header.setupViews(with: category, status: categoriesStatus[category] ?? .open)
+        header.delegate = self
+        return header
     }
-}
 
-extension SideBarContentViewController {
-    enum SegmentedControlTag {
-        case all
-        case recorded
-
-        var title: String {
-            switch self {
-            case .all: return "TODO"
-            case .recorded: return "CUENTA"
-            }
-        }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40
     }
 }
 
@@ -269,6 +327,55 @@ extension SideBarContentViewController: SideBarContentTableCellDelegate {
             bill.rows[rowIndex] = billRow
             updateBill()
             delegate?.billDidChange(bill)
+        }
+    }
+}
+
+extension SideBarContentViewController: ChargeBillViewControllerDelegate {
+    func billRowsDidChange(_ billRows: [BillRow]) {
+        billRows.forEach { billRow in
+            if let rowIndex = bill.rows.firstIndex(where: { $0.id == billRow.id }) {
+                bill.rows[rowIndex] = billRow
+            }
+        }
+        tableView.reloadData()
+        updateBill()
+        delegate?.billDidChange(bill)
+    }
+}
+
+extension SideBarContentViewController: SideBarContentSectionHeaderViewDelegate {
+    func sectionStatusDidChange(_ status: SideBarContentSectionHeaderView.Status, for category: ItemFactory.Category) {
+        categoriesStatus[category] = status
+
+        UIView.transition(with: tableView,
+                          duration: 0.15,
+                          options: .transitionCrossDissolve,
+                          animations: { [weak self] in
+            guard let self else { return }
+            self.tableView.reloadData()
+        })
+
+//        if let index = categories.firstIndex(where: { $0 == category }) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+//                guard let self else { return }
+//                self.tableView.reloadSections([index], with: .automatic)
+//            }
+//        }
+    }
+}
+
+extension SideBarContentViewController {
+
+    enum SideBarContentTag: CaseIterable {
+        case all
+        case recorded
+
+        var title: String {
+            switch self {
+            case .all: return "TODO"
+            case .recorded: return "CUENTA"
+            }
         }
     }
 }

@@ -23,6 +23,8 @@
 		AA8704C82BF79CDE000A9738 /* ChargeBillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */; };
 		AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */; };
 		AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */; };
+		AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345D72BF8D84D002BAF2D /* UIButton.swift */; };
+		AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */; };
 		AAA940A42BED23F2002F139A /* Bill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA940A32BED23F2002F139A /* Bill.swift */; };
 		AAACD3E72BF77B00006917D2 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAACD3E62BF77B00006917D2 /* UIView.swift */; };
 		AABF41862BF177F30089FCA1 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF41852BF177F30089FCA1 /* StatusView.swift */; };
@@ -50,6 +52,8 @@
 		AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillViewController.swift; sourceTree = "<group>"; };
 		AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableCell.swift; sourceTree = "<group>"; };
 		AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableHeaderView.swift; sourceTree = "<group>"; };
+		AAA345D72BF8D84D002BAF2D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentSectionHeaderView.swift; sourceTree = "<group>"; };
 		AAA940A32BED23F2002F139A /* Bill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bill.swift; sourceTree = "<group>"; };
 		AAACD3E62BF77B00006917D2 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		AABF41852BF177F30089FCA1 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 				AACD5EEA2BF7350E00064734 /* SideBarContentTableHeaderView.swift */,
 				AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */,
 				AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */,
+				AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */,
 			);
 			path = Table;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 				AACD5EED2BF75A4A00064734 /* Double.swift */,
 				AACD5EEF2BF76A2D00064734 /* UILabel.swift */,
 				AAACD3E62BF77B00006917D2 /* UIView.swift */,
+				AAA345D72BF8D84D002BAF2D /* UIButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -268,6 +274,7 @@
 				AA10D93B2BF41F1200DE1F0C /* SideBarContentTableCell.swift in Sources */,
 				AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */,
 				AA1D78C62BE8C0FD00B3ECC1 /* AppDelegate.swift in Sources */,
+				AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */,
 				AA1D78C82BE8C0FD00B3ECC1 /* SceneDelegate.swift in Sources */,
 				AAA940A42BED23F2002F139A /* Bill.swift in Sources */,
 				AA2C3CF52BECD8E000292347 /* AddBillViewController.swift in Sources */,
@@ -277,6 +284,7 @@
 				AACD5EEE2BF75A4A00064734 /* Double.swift in Sources */,
 				AA83F3CF2BF4B75E009B563C /* QuantitySelectorView.swift in Sources */,
 				AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */,
+				AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +441,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = es.rudo.TPV;
+				PRODUCT_BUNDLE_IDENTIFIER = TPV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -461,7 +469,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = es.rudo.TPV;
+				PRODUCT_BUNDLE_IDENTIFIER = TPV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

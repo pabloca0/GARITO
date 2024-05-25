@@ -91,11 +91,11 @@ class ChargeBillTableCell: UITableViewCell {
     }
 
     private func updateLabels() {
-        orderedLabel.setTextWithFadeAnimation(billRow.paidQuantity.description)
-        orderedPriceLabel.setTextWithFadeAnimation("\(billRow.paidPrice.description) €")
+        orderedLabel.setTextWithFadeAnimation(billRow.orderedQuantity.description)
+        orderedPriceLabel.setTextWithFadeAnimation("\(billRow.orderedPrice.description) €")
         pendingLabel.setTextWithFadeAnimation(billRow.pendingQuantity.description)
         pendingPriceLabel.setTextWithFadeAnimation("\(self.billRow.pendingPrice.description) €")
-        totalLabel.setTextWithFadeAnimation("\(self.billRow.orderedPrice.description) €")
+        totalLabel.setTextWithFadeAnimation("\(self.billRow.chargedPaidPrice.description) €")
     }
 
     // MARK: - Setup
@@ -138,7 +138,7 @@ class ChargeBillTableCell: UITableViewCell {
         addSubview(quantitySelector)
         quantitySelector.translatesAutoresizingMaskIntoConstraints = false
         quantitySelector.delegate = self
-        quantitySelector.show(billRow.orderedQuantity)
+        quantitySelector.show(billRow.chargedPaidQuantity, maxQuantity: billRow.pendingQuantity)
         setupQuantitySelectorConstraints()
     }
 
@@ -163,7 +163,7 @@ class ChargeBillTableCell: UITableViewCell {
         orderedLabel = UILabel()
         orderedStackView.addArrangedSubview(orderedLabel)
         orderedLabel.translatesAutoresizingMaskIntoConstraints = false
-        orderedLabel.text = billRow.paidQuantity.description
+        orderedLabel.text = billRow.orderedQuantity.description
         orderedLabel.textAlignment = .center
         orderedLabel.textColor = .darkGray
         orderedLabel.font = UIFont.systemFont(ofSize: 24)
@@ -174,7 +174,7 @@ class ChargeBillTableCell: UITableViewCell {
         orderedPriceLabel = UILabel()
         orderedStackView.addArrangedSubview(orderedPriceLabel)
         orderedPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        orderedPriceLabel.text = "\(billRow.paidPrice.description) €"
+        orderedPriceLabel.text = "\(billRow.orderedPrice.description) €"
         orderedPriceLabel.textAlignment = .center
         orderedPriceLabel.textColor = .lightGray
         orderedPriceLabel.font = UIFont.systemFont(ofSize: 14)
@@ -232,7 +232,7 @@ class ChargeBillTableCell: UITableViewCell {
         totalLabel = UILabel()
         addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.text = "\(billRow.orderedPrice.description) €"
+        totalLabel.text = "\(billRow.paidPrice.description) €"
         totalLabel.textAlignment = .center
         totalLabel.textColor = .darkGray
         totalLabel.font = UIFont.systemFont(ofSize: 20)
@@ -326,7 +326,7 @@ class ChargeBillTableCell: UITableViewCell {
 
 extension ChargeBillTableCell: QuantitySelectorDelegate {
     func quantityDidChange(_ quantitySelector: QuantitySelectorView, to quantity: Int) {
-        billRow.paidQuantity = self.quantitySelector.id == quantitySelector.id ? quantity : billRow.paidQuantity
+        billRow.chargedPaidQuantity = self.quantitySelector.id == quantitySelector.id ? quantity : billRow.paidQuantity
         updateLabels()
         delegate?.billRowDidChange(billRow)
     }

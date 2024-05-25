@@ -38,7 +38,9 @@ class AddBillViewController: UIViewController {
     @objc
     func checkMarkButtonTapped() {
         let billRows = ItemFactory.items.map({ BillRow(item: $0,
-                                                       orderedQuantity: 0, paidQuantity: 0) })
+                                                       orderedQuantity: 0, 
+                                                       paidQuantity: 0,
+                                                       chargedPaidQuantity: 0) })
         if let name = nameTextField.text?.uppercased(), !name.isEmpty {
             let bill = Bill(name: name, rows: billRows)
             delegate?.didAdd(bill)
