@@ -27,11 +27,11 @@ class SideBarContentTableCell: UITableViewCell {
     private var paidStackView: UIStackView!
     private var paidLabel: UILabel!
     private var paidPriceLabel: UILabel!
-    private var paidPendingSeparatorView: UIView!
-    private var pendingStackView: UIStackView!
-    private var pendingLabel: UILabel!
-    private var pendingPriceLabel: UILabel!
-    private var pendingTotalSeparatorView: UIView!
+    private var paidOrderedSeparatorView: UIView!
+    private var orderedStackView: UIStackView!
+    private var orderedLabel: UILabel!
+    private var orderedPriceLabel: UILabel!
+    private var orderedTotalSeparatorView: UIView!
     private var totalLabel: UILabel!
 
     // Life cycle
@@ -46,7 +46,7 @@ class SideBarContentTableCell: UITableViewCell {
             $0.removeFromSuperview()
         })
 
-        pendingStackView.arrangedSubviews.forEach({
+        orderedStackView.arrangedSubviews.forEach({
             $0.removeFromSuperview()
         })
 
@@ -56,11 +56,11 @@ class SideBarContentTableCell: UITableViewCell {
         quantityPaidSeparatorView.removeFromSuperview()
         paidStackView.removeFromSuperview()
         paidLabel.removeFromSuperview()
-        paidPendingSeparatorView.removeFromSuperview()
-        pendingStackView.removeFromSuperview()
-        pendingLabel.removeFromSuperview()
-        pendingPriceLabel.removeFromSuperview()
-        pendingTotalSeparatorView.removeFromSuperview()
+        paidOrderedSeparatorView.removeFromSuperview()
+        orderedStackView.removeFromSuperview()
+        orderedLabel.removeFromSuperview()
+        orderedPriceLabel.removeFromSuperview()
+        orderedTotalSeparatorView.removeFromSuperview()
         totalLabel.removeFromSuperview()
 
         billRow = nil
@@ -71,11 +71,11 @@ class SideBarContentTableCell: UITableViewCell {
         paidStackView = nil
         paidLabel = nil
         paidPriceLabel = nil
-        paidPendingSeparatorView = nil
-        pendingStackView = nil
-        pendingLabel = nil
-        pendingPriceLabel = nil
-        pendingTotalSeparatorView = nil
+        paidOrderedSeparatorView = nil
+        orderedStackView = nil
+        orderedLabel = nil
+        orderedPriceLabel = nil
+        orderedTotalSeparatorView = nil
         totalLabel = nil
     }
 
@@ -92,10 +92,10 @@ class SideBarContentTableCell: UITableViewCell {
 
     private func updateLabels() {
         paidLabel.setTextWithFadeAnimation(billRow.paidQuantity.description)
-        paidPriceLabel.setTextWithFadeAnimation("\(billRow.paidPrice.description) €")
-        pendingLabel.setTextWithFadeAnimation(billRow.pendingQuantity.description)
-        pendingPriceLabel.setTextWithFadeAnimation("\(self.billRow.pendingPrice.description) €")
-        totalLabel.setTextWithFadeAnimation("\(self.billRow.orderedPrice.description) €")
+        paidPriceLabel.setTextWithFadeAnimation(billRow.paidPrice.toCurrency())
+        orderedLabel.setTextWithFadeAnimation(billRow.orderedQuantity.description)
+        orderedPriceLabel.setTextWithFadeAnimation(billRow.orderedPrice.toCurrency())
+        totalLabel.setTextWithFadeAnimation(billRow.orderedPrice.toCurrency())
     }
 
     // MARK: - Setup
@@ -109,11 +109,11 @@ class SideBarContentTableCell: UITableViewCell {
         setupPaidStackView()
         setupPaidLabel()
         setupPaidPriceLabel()
-        setupPaidPendingSeparatorView()
-        setupPendingStackView()
-        setupPendingLabel()
-        setupPendingPriceLabel()
-        setupPendingTotalSeparatorView()
+        setupPaidOrderedSeparatorView()
+        setupOrderedStackView()
+        setupOrderedLabel()
+        setupOrderedPriceLabel()
+        setupOrderedTotalSeparatorView()
         setupTotalLabel()
     }
     
@@ -138,7 +138,7 @@ class SideBarContentTableCell: UITableViewCell {
         addSubview(quantitySelector)
         quantitySelector.translatesAutoresizingMaskIntoConstraints = false
         quantitySelector.delegate = self
-        quantitySelector.show(billRow.orderedQuantity, minQuantity: billRow.paidQuantity)
+        quantitySelector.show(billRow.pendingQuantity)
         setupQuantitySelectorConstraints()
     }
 
@@ -174,65 +174,65 @@ class SideBarContentTableCell: UITableViewCell {
         paidPriceLabel = UILabel()
         paidStackView.addArrangedSubview(paidPriceLabel)
         paidPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        paidPriceLabel.text = "\(billRow.paidPrice.description) €"
+        paidPriceLabel.text = billRow.paidPrice.toCurrency()
         paidPriceLabel.textAlignment = .center
         paidPriceLabel.textColor = .lightGray
         paidPriceLabel.font = UIFont.systemFont(ofSize: 14)
         paidPriceLabel.adjustsFontSizeToFitWidth = true
     }
 
-    func setupPaidPendingSeparatorView() {
-        paidPendingSeparatorView = UIView()
-        addSubview(paidPendingSeparatorView)
-        paidPendingSeparatorView.translatesAutoresizingMaskIntoConstraints = false
-        paidPendingSeparatorView.backgroundColor = .systemGray4
-        setupPaidPendingSeparatorViewConstraints()
+    func setupPaidOrderedSeparatorView() {
+        paidOrderedSeparatorView = UIView()
+        addSubview(paidOrderedSeparatorView)
+        paidOrderedSeparatorView.translatesAutoresizingMaskIntoConstraints = false
+        paidOrderedSeparatorView.backgroundColor = .systemGray4
+        setupPaidOrderedSeparatorViewConstraints()
     }
 
-    func setupPendingStackView() {
-        pendingStackView = UIStackView()
-        addSubview(pendingStackView)
-        pendingStackView.translatesAutoresizingMaskIntoConstraints = false
-        pendingStackView.axis = .vertical
-        pendingStackView.distribution = .fillProportionally
-        setupPendingStackViewConstraints()
+    func setupOrderedStackView() {
+        orderedStackView = UIStackView()
+        addSubview(orderedStackView)
+        orderedStackView.translatesAutoresizingMaskIntoConstraints = false
+        orderedStackView.axis = .vertical
+        orderedStackView.distribution = .fillProportionally
+        setupOrderedStackViewConstraints()
     }
 
-    func setupPendingLabel() {
-        pendingLabel = UILabel()
-        pendingStackView.addArrangedSubview(pendingLabel)
-        pendingLabel.translatesAutoresizingMaskIntoConstraints = false
-        pendingLabel.text = billRow.pendingQuantity.description
-        pendingLabel.textAlignment = .center
-        pendingLabel.textColor = .darkGray
-        pendingLabel.font = UIFont.systemFont(ofSize: 24)
-        pendingLabel.adjustsFontSizeToFitWidth = true
+    func setupOrderedLabel() {
+        orderedLabel = UILabel()
+        orderedStackView.addArrangedSubview(orderedLabel)
+        orderedLabel.translatesAutoresizingMaskIntoConstraints = false
+        orderedLabel.text = billRow.orderedQuantity.description
+        orderedLabel.textAlignment = .center
+        orderedLabel.textColor = .darkGray
+        orderedLabel.font = UIFont.systemFont(ofSize: 24)
+        orderedLabel.adjustsFontSizeToFitWidth = true
     }
 
-    func setupPendingPriceLabel() {
-        pendingPriceLabel = UILabel()
-        pendingStackView.addArrangedSubview(pendingPriceLabel)
-        pendingPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        pendingPriceLabel.text = "\(billRow.pendingPrice.description) €"
-        pendingPriceLabel.textAlignment = .center
-        pendingPriceLabel.textColor = .lightGray
-        pendingPriceLabel.font = UIFont.systemFont(ofSize: 14)
-        pendingPriceLabel.adjustsFontSizeToFitWidth = true
+    func setupOrderedPriceLabel() {
+        orderedPriceLabel = UILabel()
+        orderedStackView.addArrangedSubview(orderedPriceLabel)
+        orderedPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        orderedPriceLabel.text = billRow.orderedPrice.toCurrency()
+        orderedPriceLabel.textAlignment = .center
+        orderedPriceLabel.textColor = .lightGray
+        orderedPriceLabel.font = UIFont.systemFont(ofSize: 14)
+        orderedPriceLabel.adjustsFontSizeToFitWidth = true
     }
 
-    func setupPendingTotalSeparatorView() {
-        pendingTotalSeparatorView = UIView()
-        addSubview(pendingTotalSeparatorView)
-        pendingTotalSeparatorView.translatesAutoresizingMaskIntoConstraints = false
-        pendingTotalSeparatorView.backgroundColor = .systemGray4
-        setupPendingTotalSeparatorViewConstraints()
+    func setupOrderedTotalSeparatorView() {
+        orderedTotalSeparatorView = UIView()
+        addSubview(orderedTotalSeparatorView)
+        orderedTotalSeparatorView.translatesAutoresizingMaskIntoConstraints = false
+        orderedTotalSeparatorView.backgroundColor = .systemGray4
+        setupOrderedTotalSeparatorViewConstraints()
     }
 
     func setupTotalLabel() {
         totalLabel = UILabel()
         addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.text = "\(billRow.orderedPrice.description) €"
+        totalLabel.text = billRow.orderedPrice.toCurrency()
         totalLabel.textAlignment = .center
         totalLabel.textColor = .darkGray
         totalLabel.font = UIFont.systemFont(ofSize: 20)
@@ -280,34 +280,34 @@ class SideBarContentTableCell: UITableViewCell {
         ])
     }
 
-    func setupPaidPendingSeparatorViewConstraints() {
+    func setupPaidOrderedSeparatorViewConstraints() {
         NSLayoutConstraint.activate([
-            paidPendingSeparatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            paidPendingSeparatorView.leadingAnchor.constraint(equalTo: paidLabel.trailingAnchor,
+            paidOrderedSeparatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            paidOrderedSeparatorView.leadingAnchor.constraint(equalTo: paidLabel.trailingAnchor,
                                                                constant: 5),
-            paidPendingSeparatorView.widthAnchor.constraint(equalToConstant: 1),
-            paidPendingSeparatorView.heightAnchor.constraint(equalTo: heightAnchor, 
+            paidOrderedSeparatorView.widthAnchor.constraint(equalToConstant: 1),
+            paidOrderedSeparatorView.heightAnchor.constraint(equalTo: heightAnchor, 
                                                              constant: -20),
         ])
     }
 
-    func setupPendingStackViewConstraints() {
+    func setupOrderedStackViewConstraints() {
         NSLayoutConstraint.activate([
-            pendingStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            pendingStackView.leadingAnchor.constraint(equalTo: paidPendingSeparatorView.trailingAnchor,
+            orderedStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            orderedStackView.leadingAnchor.constraint(equalTo: paidOrderedSeparatorView.trailingAnchor,
                                                   constant: 5),
-            pendingStackView.widthAnchor.constraint(equalTo: widthAnchor,
+            orderedStackView.widthAnchor.constraint(equalTo: widthAnchor,
                                                 multiplier: 1 / 10)
         ])
     }
 
-    func setupPendingTotalSeparatorViewConstraints() {
+    func setupOrderedTotalSeparatorViewConstraints() {
         NSLayoutConstraint.activate([
-            pendingTotalSeparatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            pendingTotalSeparatorView.leadingAnchor.constraint(equalTo: pendingStackView.trailingAnchor,
+            orderedTotalSeparatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            orderedTotalSeparatorView.leadingAnchor.constraint(equalTo: orderedStackView.trailingAnchor,
                                                                constant: 5),
-            pendingTotalSeparatorView.widthAnchor.constraint(equalToConstant: 1),
-            pendingTotalSeparatorView.heightAnchor.constraint(equalTo: heightAnchor,
+            orderedTotalSeparatorView.widthAnchor.constraint(equalToConstant: 1),
+            orderedTotalSeparatorView.heightAnchor.constraint(equalTo: heightAnchor,
                                                               constant: -20),
         ])
     }
@@ -315,7 +315,7 @@ class SideBarContentTableCell: UITableViewCell {
     func setupTotalLabelConstraints() {
         NSLayoutConstraint.activate([
             totalLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            totalLabel.leadingAnchor.constraint(equalTo: pendingTotalSeparatorView.trailingAnchor,
+            totalLabel.leadingAnchor.constraint(equalTo: orderedTotalSeparatorView.trailingAnchor,
                                                 constant: 5),
             totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                  constant: -5)
@@ -326,7 +326,10 @@ class SideBarContentTableCell: UITableViewCell {
 
 extension SideBarContentTableCell: QuantitySelectorDelegate {
     func quantityDidChange(_ quantitySelector: QuantitySelectorView, to quantity: Int) {
-        billRow.orderedQuantity = self.quantitySelector.id == quantitySelector.id ? quantity : billRow.orderedQuantity
+        billRow.orderedQuantity = self.quantitySelector.id == quantitySelector.id ?
+            quantity + billRow.paidQuantity :
+            billRow.orderedQuantity
+
         updateLabels()
         delegate?.billRowDidChange(billRow)
     }

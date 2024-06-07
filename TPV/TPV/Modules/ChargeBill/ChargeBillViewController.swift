@@ -38,6 +38,8 @@ class ChargeBillViewController: UIViewController {
         chargeButton.setBackgroundColorWithFadeAnimation(billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
                                                                                             green: 72 / 255,
                                                                                             blue: 36 / 255, alpha: 1))
+        let quantity = billRows.reduce(0) { $0 + $1.chargedPaidPrice }
+        chargeButton.setTitle("COBRAR · \(quantity.toCurrency())", for: .normal)
         chargeButton.isEnabled = !billIsEmpty
     }
 
@@ -88,7 +90,7 @@ class ChargeBillViewController: UIViewController {
         chargeButton = UIButton()
         view.addSubview(chargeButton)
         chargeButton.translatesAutoresizingMaskIntoConstraints = false
-        chargeButton.setTitle("COBRAR", for: .normal)
+        chargeButton.setTitle("COBRAR · \(0.toCurrency())", for: .normal)
         chargeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16,
                                                           weight: .semibold)
         chargeButton.layer.cornerRadius = 60 / 2

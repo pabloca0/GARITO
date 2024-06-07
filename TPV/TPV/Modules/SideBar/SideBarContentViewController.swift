@@ -99,7 +99,7 @@ final class SideBarContentViewController: UIViewController {
     }
 
     private func updateBill() {
-        totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.totalPrice.description) €")
+        totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.totalPrice.toCurrency())")
         statusView.showWithFade(bill.status)
         let billIsEmpty = bill.rows.filter({ $0.pendingQuantity > 0 }).isEmpty
         chargeButton.setBackgroundColorWithFadeAnimation(billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
@@ -143,7 +143,7 @@ final class SideBarContentViewController: UIViewController {
         view.addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
         totalLabel.textColor = .white
-        totalLabel.text = "TOTAL: \(bill.totalPrice.description) €"
+        totalLabel.text = "TOTAL: \(bill.totalPrice.toCurrency())"
         totalLabel.font = UIFont.systemFont(ofSize: 16)
         setupTotalLabelConstraints()
     }

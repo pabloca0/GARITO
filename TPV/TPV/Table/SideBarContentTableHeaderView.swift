@@ -12,9 +12,9 @@ class SideBarContentTableHeaderView: UIView {
     // Views
 
     private var nameLabel: UILabel!
-    private var orderedLabel: UILabel!
-    private var paidLabel: UILabel!
     private var pendingLabel: UILabel!
+    private var paidLabel: UILabel!
+    private var orderedLabel: UILabel!
     private var totalLabel: UILabel!
 
     // Setup
@@ -25,9 +25,9 @@ class SideBarContentTableHeaderView: UIView {
                                   blue: 172 / 255,
                                   alpha: 1)
         setupNameLabel()
-        setupOrderedLabel()
-        setupPaidLabel()
         setupPendingLabel()
+        setupPaidLabel()
+        setupOrderedLabel()
         setupTotalLabel()
     }
 
@@ -42,15 +42,15 @@ class SideBarContentTableHeaderView: UIView {
         setupNameLabelConstraints()
     }
 
-    func setupOrderedLabel() {
-        orderedLabel = UILabel()
-        addSubview(orderedLabel)
-        orderedLabel.translatesAutoresizingMaskIntoConstraints = false
-        orderedLabel.textAlignment = .center
-        orderedLabel.font = UIFont.systemFont(ofSize: 12)
-        orderedLabel.textColor = .gray
-        orderedLabel.text = "APUNTADO"
-        setupOrderedLabelConstraints()
+    func setupPendingLabel() {
+        pendingLabel = UILabel()
+        addSubview(pendingLabel)
+        pendingLabel.translatesAutoresizingMaskIntoConstraints = false
+        pendingLabel.textAlignment = .center
+        pendingLabel.font = UIFont.systemFont(ofSize: 12)
+        pendingLabel.textColor = .gray
+        pendingLabel.text = "PENDIENTE"
+        setupPendingLabelConstraints()
     }
 
     func setupPaidLabel() {
@@ -64,15 +64,15 @@ class SideBarContentTableHeaderView: UIView {
         setupPaidLabelConstraints()
     }
 
-    func setupPendingLabel() {
-        pendingLabel = UILabel()
-        addSubview(pendingLabel)
-        pendingLabel.translatesAutoresizingMaskIntoConstraints = false
-        pendingLabel.textAlignment = .center
-        pendingLabel.font = UIFont.systemFont(ofSize: 12)
-        pendingLabel.textColor = .gray
-        pendingLabel.text = "PENDIENTE"
-        setupPendingLabelConstraints()
+    func setupOrderedLabel() {
+        orderedLabel = UILabel()
+        addSubview(orderedLabel)
+        orderedLabel.translatesAutoresizingMaskIntoConstraints = false
+        orderedLabel.textAlignment = .center
+        orderedLabel.font = UIFont.systemFont(ofSize: 12)
+        orderedLabel.textColor = .gray
+        orderedLabel.text = "APUNTADO"
+        setupOrderedLabelConstraints()
     }
 
     func setupTotalLabel() {
@@ -98,14 +98,14 @@ class SideBarContentTableHeaderView: UIView {
         ])
     }
 
-    func setupOrderedLabelConstraints() {
+    func setupPendingLabelConstraints() {
         NSLayoutConstraint.activate([
-            orderedLabel.topAnchor.constraint(equalTo: topAnchor),
-            orderedLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
+            pendingLabel.topAnchor.constraint(equalTo: topAnchor),
+            pendingLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
                                               constant: -5),
-            orderedLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor,
+            pendingLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor,
                                                   constant: 40),
-            orderedLabel.widthAnchor.constraint(equalTo: widthAnchor,
+            pendingLabel.widthAnchor.constraint(equalTo: widthAnchor,
                                              multiplier: 1 / 4)
         ])
     }
@@ -115,7 +115,7 @@ class SideBarContentTableHeaderView: UIView {
             paidLabel.topAnchor.constraint(equalTo: topAnchor),
             paidLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
                                               constant: -5),
-            paidLabel.leadingAnchor.constraint(equalTo: orderedLabel.trailingAnchor,
+            paidLabel.leadingAnchor.constraint(equalTo: pendingLabel.trailingAnchor,
                                                constant: 11),
             paidLabel.widthAnchor.constraint(equalTo: widthAnchor,
                                              multiplier: 1 / 10)
@@ -123,14 +123,14 @@ class SideBarContentTableHeaderView: UIView {
         ])
     }
 
-    func setupPendingLabelConstraints() {
+    func setupOrderedLabelConstraints() {
         NSLayoutConstraint.activate([
-            pendingLabel.topAnchor.constraint(equalTo: topAnchor),
-            pendingLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
+            orderedLabel.topAnchor.constraint(equalTo: topAnchor),
+            orderedLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
                                               constant: -5),
-            pendingLabel.leadingAnchor.constraint(equalTo: paidLabel.trailingAnchor,
+            orderedLabel.leadingAnchor.constraint(equalTo: paidLabel.trailingAnchor,
                                                   constant: 11),
-            pendingLabel.widthAnchor.constraint(equalTo: widthAnchor,
+            orderedLabel.widthAnchor.constraint(equalTo: widthAnchor,
                                              multiplier: 1 / 10)
         ])
     }
@@ -140,7 +140,7 @@ class SideBarContentTableHeaderView: UIView {
             totalLabel.topAnchor.constraint(equalTo: topAnchor),
             totalLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
                                                constant: -5),
-            totalLabel.leadingAnchor.constraint(equalTo: pendingLabel.trailingAnchor,
+            totalLabel.leadingAnchor.constraint(equalTo: orderedLabel.trailingAnchor,
                                                 constant: 11),
             totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                    constant: -5)

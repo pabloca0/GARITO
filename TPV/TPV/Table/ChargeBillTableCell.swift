@@ -92,10 +92,10 @@ class ChargeBillTableCell: UITableViewCell {
 
     private func updateLabels() {
         orderedLabel.setTextWithFadeAnimation(billRow.orderedQuantity.description)
-        orderedPriceLabel.setTextWithFadeAnimation("\(billRow.orderedPrice.description) €")
+        orderedPriceLabel.setTextWithFadeAnimation(billRow.orderedPrice.toCurrency())
         pendingLabel.setTextWithFadeAnimation(billRow.pendingQuantity.description)
-        pendingPriceLabel.setTextWithFadeAnimation("\(self.billRow.pendingPrice.description) €")
-        totalLabel.setTextWithFadeAnimation("\(self.billRow.chargedPaidPrice.description) €")
+        pendingPriceLabel.setTextWithFadeAnimation(billRow.pendingPrice.toCurrency())
+        totalLabel.setTextWithFadeAnimation(billRow.chargedPaidPrice.toCurrency())
     }
 
     // MARK: - Setup
@@ -174,7 +174,7 @@ class ChargeBillTableCell: UITableViewCell {
         orderedPriceLabel = UILabel()
         orderedStackView.addArrangedSubview(orderedPriceLabel)
         orderedPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        orderedPriceLabel.text = "\(billRow.orderedPrice.description) €"
+        orderedPriceLabel.text = billRow.orderedPrice.toCurrency()
         orderedPriceLabel.textAlignment = .center
         orderedPriceLabel.textColor = .lightGray
         orderedPriceLabel.font = UIFont.systemFont(ofSize: 14)
@@ -213,7 +213,7 @@ class ChargeBillTableCell: UITableViewCell {
         pendingPriceLabel = UILabel()
         pendingStackView.addArrangedSubview(pendingPriceLabel)
         pendingPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        pendingPriceLabel.text = "\(billRow.pendingPrice.description) €"
+        pendingPriceLabel.text = billRow.pendingPrice.toCurrency()
         pendingPriceLabel.textAlignment = .center
         pendingPriceLabel.textColor = .lightGray
         pendingPriceLabel.font = UIFont.systemFont(ofSize: 14)
@@ -232,7 +232,7 @@ class ChargeBillTableCell: UITableViewCell {
         totalLabel = UILabel()
         addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.text = "\(billRow.paidPrice.description) €"
+        totalLabel.text = billRow.paidPrice.toCurrency()
         totalLabel.textAlignment = .center
         totalLabel.textColor = .darkGray
         totalLabel.font = UIFont.systemFont(ofSize: 20)

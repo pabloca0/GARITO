@@ -14,13 +14,16 @@ protocol QuantitySelectorDelegate: AnyObject {
 class QuantitySelectorView: UIView {
 
     // Properties
+
+    let id = UUID()
     weak var delegate: QuantitySelectorDelegate?
     private var quantity: Int = 0
     private var maxQuantity: Int = .max
     private var minQuantity: Int = 0
+    private var incrementTimer: Timer?
 
     // Views
-    let id = UUID()
+
     private var contentStackView: UIStackView!
     private var minusButton: UIButton!
     private var plusButton: UIButton!
@@ -36,7 +39,16 @@ class QuantitySelectorView: UIView {
     }
 
     @objc
-    func minusButtonTapped() {
+    private func incrementQuantity() {
+        if quantity < maxQuantity {
+            quantity += 1
+            quantityLabel.setTextWithFadeAnimation(quantity.description)
+            delegate?.quantityDidChange(self, to: quantity)
+        }
+    }
+
+    @objc
+    private func decrementQuantity() {
         if quantity > minQuantity {
             quantity -= 1
             quantityLabel.setTextWithFadeAnimation(quantity.description)
@@ -45,24 +57,41 @@ class QuantitySelectorView: UIView {
     }
 
     @objc
-    func plusButtonTapped() {
-        if quantity < maxQuantity {
-            quantity += 1
-            quantityLabel.setTextWithFadeAnimation(quantity.description)
-            delegate?.quantityDidChange(self, to: quantity)
-        }
+    private func minusButtonTapped() {
+        decrementQuantity()
+        incrementTimer = Timer.scheduledTimer(timeInterval: 0.1,
+                                              target: self,
+                                              selector: #selector(decrementQuantity),
+                                              userInfo: nil,
+                                              repeats: true)
+    }
+
+    @objc
+    private func plusButtonTapped() {
+        incrementQuantity()
+        incrementTimer = Timer.scheduledTimer(timeInterval: 0.1,
+                                              target: self,
+                                              selector: #selector(incrementQuantity),
+                                              userInfo: nil,
+                                              repeats: true)
+    }
+
+    @objc
+    private func buttonReleased() {
+        incrementTimer?.invalidate()
+        incrementTimer = nil
     }
 
     // Setup
 
-    func setupViews() {
+    private func setupViews() {
         setupContentStackView()
         setupMinusButton()
         setupQuantityLabel()
         setupPlusButton()
     }
 
-    func setupContentStackView() {
+    private func setupContentStackView() {
         contentStackView = UIStackView()
         addSubview(contentStackView)
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +100,7 @@ class QuantitySelectorView: UIView {
         setupContentStackViewConstraints()
     }
 
-    func setupMinusButton() {
+    private func setupMinusButton() {
         minusButton = UIButton()
         contentStackView.addArrangedSubview(minusButton)
         minusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -84,12 +113,15 @@ class QuantitySelectorView: UIView {
         minusButton.contentVerticalAlignment = .fill
         minusButton.imageView?.contentMode = .scaleAspectFit
         minusButton.addTarget(self,
-                              action: #selector(minusButtonTapped),
-                              for: .touchUpInside)
+                             action: #selector(minusButtonTapped),
+                             for: .touchDown)
+        minusButton.addTarget(self,
+                             action: #selector(buttonReleased),
+                             for: [.touchUpInside, .touchUpOutside, .touchCancel])
         setupMinusButtonConstraints()
     }
 
-    func setupQuantityLabel() {
+    private func setupQuantityLabel() {
         quantityLabel = UILabel()
         contentStackView.addArrangedSubview(quantityLabel)
         quantityLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +133,7 @@ class QuantitySelectorView: UIView {
         setupQuantityLabelConstraints()
     }
 
-    func setupPlusButton() {
+    private func setupPlusButton() {
         plusButton = UIButton()
         contentStackView.addArrangedSubview(plusButton)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -113,11 +145,14 @@ class QuantitySelectorView: UIView {
         plusButton.imageView?.contentMode = .scaleAspectFit
         plusButton.addTarget(self,
                              action: #selector(plusButtonTapped),
-                             for: .touchUpInside)
+                             for: .touchDown)
+        plusButton.addTarget(self,
+                             action: #selector(buttonReleased), 
+                             for: [.touchUpInside, .touchUpOutside, .touchCancel])
         setupPlusButtonConstraints()
     }
 
-    func setupContentStackViewConstraints() {
+    private func setupContentStackViewConstraints() {
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: topAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -126,20 +161,20 @@ class QuantitySelectorView: UIView {
         ])
     }
 
-    func setupMinusButtonConstraints() {
+    private func setupMinusButtonConstraints() {
         NSLayoutConstraint.activate([
             minusButton.widthAnchor.constraint(equalToConstant: 40),
             minusButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
-    func setupQuantityLabelConstraints() {
+    private func setupQuantityLabelConstraints() {
         NSLayoutConstraint.activate([
             quantityLabel.widthAnchor.constraint(equalToConstant: 30)
         ])
     }
 
-    func setupPlusButtonConstraints() {
+    private func setupPlusButtonConstraints() {
         NSLayoutConstraint.activate([
             plusButton.widthAnchor.constraint(equalToConstant: 40),
             plusButton.heightAnchor.constraint(equalToConstant: 40)

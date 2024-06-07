@@ -59,7 +59,7 @@ class ChargeBillTableHeaderView: UIView {
         paidLabel.font = UIFont.systemFont(ofSize: 12)
         paidLabel.textColor = .gray
         paidLabel.adjustsFontSizeToFitWidth = true
-        paidLabel.text = "PAGADO"
+        paidLabel.text = "PAGAR AHORA"
         setupPaidLabelConstraints()
     }
 
