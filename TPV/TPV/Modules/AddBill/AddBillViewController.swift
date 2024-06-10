@@ -60,6 +60,10 @@ class AddBillViewController: UIViewController {
     func setupNavigationBar() {
         navigationItem.title = "Crear nueva cuenta"
         navigationItem.rightBarButtonItem = checkMarkButton
+        navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 18 / 255,
+                                                               green: 44 / 255,
+                                                               blue: 9 / 255,
+                                                               alpha: 1)
     }
 
     func setupNameLabel() {

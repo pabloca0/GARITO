@@ -24,10 +24,16 @@ struct Bill: Identifiable {
 
 
     
-    var totalPrice: Double {
-        var price = 0.0
-        rows.forEach({ price += $0.orderedPrice })
-        return price.round(to: 2)
+    var orderedPrice: Double {
+        rows.reduce(0, { $0 + $1.orderedPrice }).round(to: 2)
+    }
+
+    var pendingPrice: Double {
+        rows.reduce(0, { $0 + $1.pendingPrice }).round(to: 2)
+    }
+
+    var paidPrice: Double {
+        rows.reduce(0, { $0 + $1.paidPrice }).round(to: 2)
     }
 
     init(name: String, rows: [BillRow]) {

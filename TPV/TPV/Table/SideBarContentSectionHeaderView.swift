@@ -38,8 +38,6 @@ class SideBarContentSectionHeaderView: UIView {
             guard let self else { return }
             self.delegate?.sectionStatusDidChange(self.status, for: self.category)
         }
-
-
     }
 
     // MARK: - Setup

@@ -99,7 +99,7 @@ final class SideBarContentViewController: UIViewController {
     }
 
     private func updateBill() {
-        totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.totalPrice.toCurrency())")
+        totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.orderedPrice.toCurrency())")
         statusView.showWithFade(bill.status)
         let billIsEmpty = bill.rows.filter({ $0.pendingQuantity > 0 }).isEmpty
         chargeButton.setBackgroundColorWithFadeAnimation(billIsEmpty ? .lightGray : UIColor(red: 187 / 255,
@@ -143,7 +143,7 @@ final class SideBarContentViewController: UIViewController {
         view.addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
         totalLabel.textColor = .white
-        totalLabel.text = "TOTAL: \(bill.totalPrice.toCurrency())"
+        totalLabel.text = "TOTAL: \(bill.orderedPrice.toCurrency())"
         totalLabel.font = UIFont.systemFont(ofSize: 16)
         setupTotalLabelConstraints()
     }
@@ -355,13 +355,6 @@ extension SideBarContentViewController: SideBarContentSectionHeaderViewDelegate 
             guard let self else { return }
             self.tableView.reloadData()
         })
-
-//        if let index = categories.firstIndex(where: { $0 == category }) {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-//                guard let self else { return }
-//                self.tableView.reloadSections([index], with: .automatic)
-//            }
-//        }
     }
 }
 

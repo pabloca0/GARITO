@@ -23,6 +23,7 @@
 		AA8704C82BF79CDE000A9738 /* ChargeBillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */; };
 		AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */; };
 		AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */; };
+		AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */; };
 		AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345D72BF8D84D002BAF2D /* UIButton.swift */; };
 		AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */; };
 		AAA940A42BED23F2002F139A /* Bill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA940A32BED23F2002F139A /* Bill.swift */; };
@@ -52,6 +53,7 @@
 		AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillViewController.swift; sourceTree = "<group>"; };
 		AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableCell.swift; sourceTree = "<group>"; };
 		AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableHeaderView.swift; sourceTree = "<group>"; };
+		AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarMenuTableCell.swift; sourceTree = "<group>"; };
 		AAA345D72BF8D84D002BAF2D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentSectionHeaderView.swift; sourceTree = "<group>"; };
 		AAA940A32BED23F2002F139A /* Bill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bill.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 		AA10D9392BF41EE800DE1F0C /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */,
 				AA10D93A2BF41F1200DE1F0C /* SideBarContentTableCell.swift */,
 				AACD5EEA2BF7350E00064734 /* SideBarContentTableHeaderView.swift */,
 				AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */,
@@ -283,6 +286,7 @@
 				AA10D9382BF41D5500DE1F0C /* ItemFactory.swift in Sources */,
 				AACD5EEE2BF75A4A00064734 /* Double.swift in Sources */,
 				AA83F3CF2BF4B75E009B563C /* QuantitySelectorView.swift in Sources */,
+				AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */,
 				AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */,
 				AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */,
 			);

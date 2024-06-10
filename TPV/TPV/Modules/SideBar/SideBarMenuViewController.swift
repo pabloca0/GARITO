@@ -54,6 +54,10 @@ class SideBarMenuViewController: UIViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(addBillTapped))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 18 / 255,
+                                                               green: 44 / 255,
+                                                               blue: 9 / 255,
+                                                               alpha: 1)
     }
 
     func setupTableView() {
@@ -65,7 +69,8 @@ class SideBarMenuViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.description())
+        tableView.register(SideBarMenuTableCell.self,
+                           forCellReuseIdentifier: SideBarMenuTableCell.description())
 
         setupTableViewConstraints()
     }
@@ -114,6 +119,7 @@ class SideBarMenuViewController: UIViewController {
 
     func setBills(_ bills: [Bill]) {
         self.bills = bills
+        tableView.reloadData()
     }
 
     func selectBill(at index: Int?) {
@@ -150,12 +156,13 @@ extension SideBarMenuViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.description(), for: indexPath)
-        cell.textLabel?.text = bills[indexPath.row].name
-        cell.textLabel?.textColor = UIColor(red: 18 / 255,
-                                            green: 44 / 255,
-                                            blue: 9 / 255,
-                                            alpha: 1)
+        let cell = tableView.dequeueReusableCell(withIdentifier: SideBarMenuTableCell.description(),
+                                                 for: indexPath) as! SideBarMenuTableCell
+        cell.setup(title: bills[indexPath.row].name,
+                   orderedPrice: bills[indexPath.row].orderedPrice.toCurrency(),
+                   pendingPrice: bills[indexPath.row].pendingPrice.toCurrency(),
+                   paidPrice: bills[indexPath.row].paidPrice.toCurrency(),
+                   statusColor: bills[indexPath.row].status.displayColor)
         cell.selectedBackgroundView = selectedBackgroundView
         return cell
     }
@@ -163,9 +170,13 @@ extension SideBarMenuViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didSelect(bills[indexPath.row])
     }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
+    }
 }
 
-// AddColorViewControllerDelegate
+// MARK: - AddBillViewControllerDelegate
 
 extension SideBarMenuViewController: AddBillViewControllerDelegate {
     func didAdd(_ bill: Bill) {
