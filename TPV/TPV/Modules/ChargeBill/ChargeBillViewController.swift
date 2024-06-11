@@ -15,13 +15,16 @@ class ChargeBillViewController: UIViewController {
 
     // Properties
 
-    var billRows: [BillRow] = []
+    private var billRows: [BillRow] = []
+    private var selectAllStatus: SelectAllStatus = .none
     weak var delegate: ChargeBillViewControllerDelegate?
 
     // Views
+
     private var titleLabel: UILabel!
     private var tableView: UITableView!
     private var chargeButton: UIButton!
+    private var selectAllButton: UIButton!
 
     // Life Cycle
 
@@ -53,6 +56,16 @@ class ChargeBillViewController: UIViewController {
         dismiss(animated: true)
     }
 
+    @objc
+    func selectAllButtonTapped() {
+        if selectAllButtonStatus == .all {
+            billRows.enumerated().forEach({
+                billRows[$0].chargedPaidQuantity = $1.orderedQuantity - $1.paidQuantity
+            })
+            tableView.reloadData()
+        }
+    }
+
     // Setup
 
     func setupView() {
@@ -60,6 +73,7 @@ class ChargeBillViewController: UIViewController {
         setupTitleLabel()
         setupChargeButton()
         setupTableView()
+        setupSelectAllButton()
     }
 
     func setupTitleLabel() {
@@ -106,6 +120,27 @@ class ChargeBillViewController: UIViewController {
         setupChargeButtonConstraints()
     }
 
+    func setupSelectAllButton() {
+        selectAllButton = UIButton()
+        view.addSubview(selectAllButton)
+        selectAllButton.translatesAutoresizingMaskIntoConstraints = false
+        selectAllButton.setTitle("Cobrar todo", for: .normal)
+        selectAllButton.titleLabel?.font = UIFont.systemFont(ofSize: 16,
+                                                             weight: .semibold)
+        selectAllButton.titleEdgeInsets = UIEdgeInsets(top: 0,left: 10 ,bottom: 0,right: 10)
+        selectAllButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        selectAllButton.layer.cornerRadius = 30 / 2
+        selectAllButton.backgroundColor = UIColor(red: 18 / 255,
+                                               green: 44 / 255,
+                                               blue: 9 / 255,
+                                               alpha: 1)
+        selectAllButton.addTarget(self,
+                               action: #selector(selectAllButtonTapped),
+                               for: .touchUpInside)
+
+        setupSelectAllButtonConstraints()
+    }
+
     func setupTitleLabelConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor,
@@ -124,6 +159,17 @@ class ChargeBillViewController: UIViewController {
             chargeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                               constant: -20),
             chargeButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+
+    func setupSelectAllButtonConstraints() {
+        NSLayoutConstraint.activate([
+            selectAllButton.bottomAnchor.constraint(equalTo: tableView.topAnchor,
+                                              constant: -10),
+            selectAllButton.trailingAnchor.constraint(equalTo: tableView.trailingAnchor,
+                                              constant: -20),
+            selectAllButton.heightAnchor.constraint(equalToConstant: 30),
+            selectAllButton.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
 
@@ -172,5 +218,12 @@ extension ChargeBillViewController: ChargeBillTableCellDelegate {
             billRows[rowIndex] = billRow
             updateChargeButton()
         }
+    }
+}
+
+extension ChargeBillViewController {
+    enum SelectAllStatus {
+        case all
+        case none
     }
 }
