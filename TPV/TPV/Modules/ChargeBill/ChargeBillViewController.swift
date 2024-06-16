@@ -15,8 +15,7 @@ class ChargeBillViewController: UIViewController {
 
     // Properties
 
-    private var billRows: [BillRow] = []
-    private var selectAllStatus: SelectAllStatus = .none
+    var billRows: [BillRow] = []
     weak var delegate: ChargeBillViewControllerDelegate?
 
     // Views
@@ -58,12 +57,11 @@ class ChargeBillViewController: UIViewController {
 
     @objc
     func selectAllButtonTapped() {
-        if selectAllButtonStatus == .all {
             billRows.enumerated().forEach({
                 billRows[$0].chargedPaidQuantity = $1.orderedQuantity - $1.paidQuantity
             })
             tableView.reloadData()
-        }
+        updateChargeButton()
     }
 
     // Setup
@@ -218,12 +216,5 @@ extension ChargeBillViewController: ChargeBillTableCellDelegate {
             billRows[rowIndex] = billRow
             updateChargeButton()
         }
-    }
-}
-
-extension ChargeBillViewController {
-    enum SelectAllStatus {
-        case all
-        case none
     }
 }

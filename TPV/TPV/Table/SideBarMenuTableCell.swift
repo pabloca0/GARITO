@@ -136,7 +136,7 @@ private extension SideBarMenuTableCell {
         priceStackView.addArrangedSubview(pendingPriceLabel)
         pendingPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         if let pendingPrice {
-            pendingPriceLabel.text = "⚠️ \(pendingPrice)"
+            pendingPriceLabel.text = "❌ \(pendingPrice)"
         }
         pendingPriceLabel.textColor = .darkGray
         pendingPriceLabel.font = UIFont.systemFont(ofSize: 14)
@@ -147,7 +147,7 @@ private extension SideBarMenuTableCell {
         priceStackView.addArrangedSubview(paidPriceLabel)
         paidPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         if let paidPrice {
-            paidPriceLabel.text = "💰 \(paidPrice)"
+            paidPriceLabel.text = "✅ \(paidPrice)"
         }
         paidPriceLabel.textColor = .darkGray
         paidPriceLabel.font = UIFont.systemFont(ofSize: 14)

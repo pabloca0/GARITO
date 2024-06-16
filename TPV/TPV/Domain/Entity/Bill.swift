@@ -52,9 +52,9 @@ extension Bill {
 
         var displayColor: UIColor {
             switch self {
-            case .open: UIColor(red: 0, green: 143 / 255, blue: 57 / 255, alpha: 1)
+            case .open: UIColor(red: 17 / 255, green: 76 / 255, blue: 155 / 255, alpha: 1)
             case .pending: .orange
-            case .paid: UIColor(red: 17 / 255, green: 76 / 255, blue: 155 / 255, alpha: 1)
+            case .paid: UIColor(red: 0, green: 143 / 255, blue: 57 / 255, alpha: 1)
             }
         }
 

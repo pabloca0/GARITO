@@ -138,7 +138,8 @@ class ChargeBillTableCell: UITableViewCell {
         addSubview(quantitySelector)
         quantitySelector.translatesAutoresizingMaskIntoConstraints = false
         quantitySelector.delegate = self
-        quantitySelector.show(billRow.chargedPaidQuantity, maxQuantity: billRow.pendingQuantity)
+        quantitySelector.show(billRow.chargedPaidQuantity,
+                              maxQuantity: billRow.orderedQuantity - billRow.paidQuantity)
         setupQuantitySelectorConstraints()
     }
 
@@ -232,7 +233,7 @@ class ChargeBillTableCell: UITableViewCell {
         totalLabel = UILabel()
         addSubview(totalLabel)
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.text = billRow.paidPrice.toCurrency()
+        totalLabel.text = billRow.chargedPaidPrice.toCurrency()
         totalLabel.textAlignment = .center
         totalLabel.textColor = .darkGray
         totalLabel.font = UIFont.systemFont(ofSize: 20)
