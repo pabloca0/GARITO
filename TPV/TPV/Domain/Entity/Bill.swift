@@ -12,6 +12,7 @@ struct Bill: Identifiable {
     let name: String
     let createdDate: Date
     var rows: [BillRow]
+    var historicActions = [HistoricAction]()
 
     var status: Status {
         if rows.first(where: { $0.pendingQuantity > 0 }) != nil {

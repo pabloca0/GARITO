@@ -34,6 +34,7 @@ final class SideBarContentViewController: UIViewController {
 
     private var nameLabel: UILabel!
     private var statusView: StatusView!
+    private var infoButton: UIButton!
     private var totalLabel: UILabel!
     private var segmentedControl: UISegmentedControl!
     private var tableHeaderView: SideBarContentTableHeaderView!
@@ -98,6 +99,12 @@ final class SideBarContentViewController: UIViewController {
         present(chargeBillVC, animated: true)
     }
 
+    @objc
+    func infoButtonTapped() {
+        let historicActionsVC = HistoricActionsViewController(historicActions: bill.historicActions)
+        present(historicActionsVC, animated: true)
+    }
+
     private func updateBill() {
         totalLabel.setTextWithFadeAnimation("TOTAL: \(bill.orderedPrice.toCurrency())")
         statusView.showWithFade(bill.status)
@@ -113,6 +120,7 @@ final class SideBarContentViewController: UIViewController {
     func setupViews() {
         setupNameLabel()
         setupStatusView()
+        setupInfoButton()
         setupTotalLabel()
         setupSegmentedControl()
         setupTableHeaderView()
@@ -136,6 +144,19 @@ final class SideBarContentViewController: UIViewController {
         statusView.translatesAutoresizingMaskIntoConstraints = false
         statusView.showWithFade(bill.status)
         setupStatusViewConstraints()
+    }
+
+    func setupInfoButton() {
+        infoButton = UIButton()
+        view.addSubview(infoButton)
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
+        infoButton.setImage(UIImage(systemName: "info.circle.fill"),
+                            for: .normal)
+        infoButton.addTarget(self,
+                             action: #selector(infoButtonTapped),
+                             for: .touchUpInside)
+        infoButton.tintColor = .white
+        setupInfoButtonConstraints()
     }
 
     func setupTotalLabel() {
@@ -226,6 +247,16 @@ final class SideBarContentViewController: UIViewController {
             statusView.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, 
                                                 constant: 20),
             statusView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+
+    func setupInfoButtonConstraints() {
+        NSLayoutConstraint.activate([
+            infoButton.centerYAnchor.constraint(equalTo: statusView.centerYAnchor),
+            infoButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                 constant: -20),
+            infoButton.heightAnchor.constraint(equalToConstant: 30),
+            infoButton.widthAnchor.constraint(equalToConstant: 30)
         ])
     }
 
@@ -324,7 +355,24 @@ extension SideBarContentViewController: UITableViewDelegate, UITableViewDataSour
 extension SideBarContentViewController: SideBarContentTableCellDelegate {
     func billRowDidChange(_ billRow: BillRow) {
         if let rowIndex = bill.rows.firstIndex(where: { $0.id == billRow.id }) {
+            let previousOrderedQuantity = bill.rows[rowIndex].orderedQuantity
             bill.rows[rowIndex] = billRow
+
+            var actions = [HistoricAction]()
+            let increment = billRow.orderedQuantity - previousOrderedQuantity
+            if increment < 0 {
+                for _ in 1...abs(increment) {
+                    actions.append(HistoricAction(date: Date(),
+                                                  action: .deleteItem(billRow.item)))
+                }
+            } else {
+                for _ in 1...abs(increment) {
+                    actions.append(HistoricAction(date: Date(),
+                                                  action: .addItem(billRow.item)))
+                }
+            }
+
+            bill.historicActions.append(contentsOf: actions)
             updateBill()
             delegate?.billDidChange(bill)
         }
@@ -333,11 +381,20 @@ extension SideBarContentViewController: SideBarContentTableCellDelegate {
 
 extension SideBarContentViewController: ChargeBillViewControllerDelegate {
     func billRowsDidChange(_ billRows: [BillRow]) {
+        var actionsDict = [Item: Int]()
         billRows.forEach { billRow in
             if let rowIndex = bill.rows.firstIndex(where: { $0.id == billRow.id }) {
+                let previousPaidQuantity = bill.rows[rowIndex].paidQuantity
+
                 bill.rows[rowIndex] = billRow
+                let increment = billRow.paidQuantity - previousPaidQuantity
+                if increment > 0 {
+                    actionsDict[billRow.item] = increment
+                }
             }
         }
+        bill.historicActions.append(HistoricAction(date: Date(),
+                                                   action: .charge(actionsDict)))
         tableView.reloadData()
         updateBill()
         delegate?.billDidChange(bill)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Item: Identifiable {
+struct Item: Identifiable, Hashable {
     let id: UUID = UUID()
     let name: String
     let price: Double

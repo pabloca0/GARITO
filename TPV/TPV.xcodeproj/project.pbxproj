@@ -23,6 +23,9 @@
 		AA8704C82BF79CDE000A9738 /* ChargeBillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */; };
 		AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */; };
 		AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */; };
+		AA8FFA922C1EE1770079C594 /* HistoricAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA912C1EE1770079C594 /* HistoricAction.swift */; };
+		AA8FFA952C1EF0CD0079C594 /* HistoricActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */; };
+		AA8FFA972C1EF8140079C594 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA962C1EF8140079C594 /* Date.swift */; };
 		AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */; };
 		AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345D72BF8D84D002BAF2D /* UIButton.swift */; };
 		AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */; };
@@ -53,6 +56,9 @@
 		AA8704C72BF79CDE000A9738 /* ChargeBillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillViewController.swift; sourceTree = "<group>"; };
 		AA8704C92BF7A81F000A9738 /* ChargeBillTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableCell.swift; sourceTree = "<group>"; };
 		AA8704CB2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeBillTableHeaderView.swift; sourceTree = "<group>"; };
+		AA8FFA912C1EE1770079C594 /* HistoricAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricAction.swift; sourceTree = "<group>"; };
+		AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricActionsViewController.swift; sourceTree = "<group>"; };
+		AA8FFA962C1EF8140079C594 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarMenuTableCell.swift; sourceTree = "<group>"; };
 		AAA345D72BF8D84D002BAF2D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -125,6 +131,7 @@
 		AA1D78D92BE8C13000B3ECC1 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				AA8FFA932C1EF0B80079C594 /* HistoricActions */,
 				AA8704C62BF79CBF000A9738 /* ChargeBill */,
 				AA2C3CF32BECD8D400292347 /* AddBill */,
 				AA2C3CEC2BECC6AF00292347 /* SideBar */,
@@ -158,6 +165,14 @@
 			path = ChargeBill;
 			sourceTree = "<group>";
 		};
+		AA8FFA932C1EF0B80079C594 /* HistoricActions */ = {
+			isa = PBXGroup;
+			children = (
+				AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */,
+			);
+			path = HistoricActions;
+			sourceTree = "<group>";
+		};
 		AAA940A02BED23D6002F139A /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +187,7 @@
 				AAA940A32BED23F2002F139A /* Bill.swift */,
 				AA1FA1B22BF2BCDA00A6D1FC /* Item.swift */,
 				AA60FB7D2BF396510007DD5F /* BillRow.swift */,
+				AA8FFA912C1EE1770079C594 /* HistoricAction.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -192,6 +208,7 @@
 				AACD5EEF2BF76A2D00064734 /* UILabel.swift */,
 				AAACD3E62BF77B00006917D2 /* UIView.swift */,
 				AAA345D72BF8D84D002BAF2D /* UIButton.swift */,
+				AA8FFA962C1EF8140079C594 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -273,9 +290,11 @@
 				AA2C3CF02BECC78800292347 /* SideBarMenuViewController.swift in Sources */,
 				AA60FB7E2BF396510007DD5F /* BillRow.swift in Sources */,
 				AABF41862BF177F30089FCA1 /* StatusView.swift in Sources */,
+				AA8FFA952C1EF0CD0079C594 /* HistoricActionsViewController.swift in Sources */,
 				AA8704C82BF79CDE000A9738 /* ChargeBillViewController.swift in Sources */,
 				AA10D93B2BF41F1200DE1F0C /* SideBarContentTableCell.swift in Sources */,
 				AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */,
+				AA8FFA972C1EF8140079C594 /* Date.swift in Sources */,
 				AA1D78C62BE8C0FD00B3ECC1 /* AppDelegate.swift in Sources */,
 				AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */,
 				AA1D78C82BE8C0FD00B3ECC1 /* SceneDelegate.swift in Sources */,
@@ -284,6 +303,7 @@
 				AA2C3CEE2BECC6C200292347 /* SideBarViewController.swift in Sources */,
 				AAACD3E72BF77B00006917D2 /* UIView.swift in Sources */,
 				AA10D9382BF41D5500DE1F0C /* ItemFactory.swift in Sources */,
+				AA8FFA922C1EE1770079C594 /* HistoricAction.swift in Sources */,
 				AACD5EEE2BF75A4A00064734 /* Double.swift in Sources */,
 				AA83F3CF2BF4B75E009B563C /* QuantitySelectorView.swift in Sources */,
 				AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */,
