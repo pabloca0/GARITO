@@ -71,6 +71,7 @@ extension SideBarViewController: SideBarMenuViewControllerDelegate {
     func closeButtonTapped() {
         bills = []
         contentViewController.resetViews()
+        
     }
 }
 

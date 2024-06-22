@@ -26,6 +26,7 @@
 		AA8FFA922C1EE1770079C594 /* HistoricAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA912C1EE1770079C594 /* HistoricAction.swift */; };
 		AA8FFA952C1EF0CD0079C594 /* HistoricActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */; };
 		AA8FFA972C1EF8140079C594 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA962C1EF8140079C594 /* Date.swift */; };
+		AA8FFA9A2C1F09020079C594 /*  CloseShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8FFA992C1F09020079C594 /*  CloseShiftViewController.swift */; };
 		AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */; };
 		AAA345D82BF8D84D002BAF2D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345D72BF8D84D002BAF2D /* UIButton.swift */; };
 		AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */; };
@@ -59,6 +60,7 @@
 		AA8FFA912C1EE1770079C594 /* HistoricAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricAction.swift; sourceTree = "<group>"; };
 		AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricActionsViewController.swift; sourceTree = "<group>"; };
 		AA8FFA962C1EF8140079C594 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		AA8FFA992C1F09020079C594 /*  CloseShiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " CloseShiftViewController.swift"; sourceTree = "<group>"; };
 		AA96CCD62C170F9500D0E629 /* SideBarMenuTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarMenuTableCell.swift; sourceTree = "<group>"; };
 		AAA345D72BF8D84D002BAF2D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		AA1D78D92BE8C13000B3ECC1 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				AA8FFA982C1F08F20079C594 /* Summary */,
 				AA8FFA932C1EF0B80079C594 /* HistoricActions */,
 				AA8704C62BF79CBF000A9738 /* ChargeBill */,
 				AA2C3CF32BECD8D400292347 /* AddBill */,
@@ -171,6 +174,14 @@
 				AA8FFA942C1EF0CD0079C594 /* HistoricActionsViewController.swift */,
 			);
 			path = HistoricActions;
+			sourceTree = "<group>";
+		};
+		AA8FFA982C1F08F20079C594 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				AA8FFA992C1F09020079C594 /*  CloseShiftViewController.swift */,
+			);
+			path = Summary;
 			sourceTree = "<group>";
 		};
 		AAA940A02BED23D6002F139A /* Domain */ = {
@@ -309,6 +320,7 @@
 				AA96CCD72C170F9500D0E629 /* SideBarMenuTableCell.swift in Sources */,
 				AA8704CC2BF7B0B3000A9738 /* ChargeBillTableHeaderView.swift in Sources */,
 				AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */,
+				AA8FFA9A2C1F09020079C594 /*  CloseShiftViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

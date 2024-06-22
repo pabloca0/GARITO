@@ -140,10 +140,13 @@ class SideBarMenuViewController: UIViewController {
 
     @objc
     func closeButtonTapped() {
-        bills = []
-        closeButton.hideIf(bills.isEmpty)
-        tableView.reloadData()
-        delegate?.closeButtonTapped()
+        let summaryVC =  CloseShiftViewController()
+        present(summaryVC, animated: true)
+
+//        bills = []
+//        closeButton.hideIf(bills.isEmpty)
+//        tableView.reloadData()
+//        delegate?.closeButtonTapped()
     }
 }
 
