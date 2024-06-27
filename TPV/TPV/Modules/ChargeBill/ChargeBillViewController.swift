@@ -14,7 +14,7 @@ protocol ChargeBillViewControllerDelegate: AnyObject {
 class ChargeBillViewController: UIViewController {
 
     // Properties
-
+    var billId: UUID?
     var billRows: [BillRow] = []
     weak var delegate: ChargeBillViewControllerDelegate?
 

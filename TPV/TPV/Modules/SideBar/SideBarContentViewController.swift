@@ -96,6 +96,7 @@ final class SideBarContentViewController: UIViewController {
         chargeBillVC.delegate = self
         let billRowsWithPending = bill.rows.filter({ $0.pendingQuantity > 0 })
         chargeBillVC.billRows = billRowsWithPending
+        chargeBillVC.billId = bill.id
         present(chargeBillVC, animated: true)
     }
 
@@ -327,7 +328,7 @@ extension SideBarContentViewController: UITableViewDelegate, UITableViewDataSour
         let items = items.filter({ categories[indexPath.section] == $0.category })
         let showingItem = items[indexPath.row]
 
-        guard let billRow = bill.rows.first(where: { $0.item.id == showingItem.id }) else { fatalError() }
+        guard let billRow = bill.rows.first(where: { $0.item.name == showingItem.name }) else { fatalError() }
         cell.show(for: billRow)
         cell.setAsDelegate(of: self)
         return cell
@@ -363,25 +364,31 @@ extension SideBarContentViewController: SideBarContentTableCellDelegate {
             if increment < 0 {
                 for _ in 1...abs(increment) {
                     actions.append(HistoricAction(date: Date(),
-                                                  action: .deleteItem(billRow.item)))
+                                                  action: .deleteItem(billRow.item.name)))
                 }
             } else {
                 for _ in 1...abs(increment) {
                     actions.append(HistoricAction(date: Date(),
-                                                  action: .addItem(billRow.item)))
+                                                  action: .addItem(billRow.item.name)))
                 }
             }
 
-            bill.historicActions.append(contentsOf: actions)
-            updateBill()
-            delegate?.billDidChange(bill)
+            Task {
+                do {
+                    self.bill = try await BillUseCase().patchBill(bill: bill)
+                    updateBill()
+                    delegate?.billDidChange(bill)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
 }
 
 extension SideBarContentViewController: ChargeBillViewControllerDelegate {
     func billRowsDidChange(_ billRows: [BillRow]) {
-        var actionsDict = [Item: Int]()
+        var actionsDict = [String: Int]()
         billRows.forEach { billRow in
             if let rowIndex = bill.rows.firstIndex(where: { $0.id == billRow.id }) {
                 let previousPaidQuantity = bill.rows[rowIndex].paidQuantity
@@ -389,15 +396,17 @@ extension SideBarContentViewController: ChargeBillViewControllerDelegate {
                 bill.rows[rowIndex] = billRow
                 let increment = billRow.paidQuantity - previousPaidQuantity
                 if increment > 0 {
-                    actionsDict[billRow.item] = increment
+                    actionsDict[billRow.item.name] = increment
                 }
             }
         }
-        bill.historicActions.append(HistoricAction(date: Date(),
-                                                   action: .charge(actionsDict)))
-        tableView.reloadData()
-        updateBill()
-        delegate?.billDidChange(bill)
+
+        Task {
+            bill = try await BillUseCase().patchBill(bill: bill)
+            tableView.reloadData()
+            updateBill()
+            delegate?.billDidChange(bill)
+        }
     }
 }
 

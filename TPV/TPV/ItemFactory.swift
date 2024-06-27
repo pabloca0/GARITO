@@ -109,7 +109,7 @@ class ItemFactory {
     }
 
     enum Category: String, CaseIterable {
-        case beers = "Cervezas"
-        case other = "Otros"
+        case beers = "beers"
+        case other = "other"
     }
 }

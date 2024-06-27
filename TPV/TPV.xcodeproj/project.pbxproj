@@ -31,6 +31,8 @@
 		AAA345DE2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */; };
 		AAA940A42BED23F2002F139A /* Bill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA940A32BED23F2002F139A /* Bill.swift */; };
 		AAACD3E72BF77B00006917D2 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAACD3E62BF77B00006917D2 /* UIView.swift */; };
+		AAB9CE572C29C1DB004CF5BA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9CE562C29C1DB004CF5BA /* String.swift */; };
+		AAB9CE592C2A13FE004CF5BA /* BillUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB9CE582C2A13FE004CF5BA /* BillUseCase.swift */; };
 		AABF41862BF177F30089FCA1 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABF41852BF177F30089FCA1 /* StatusView.swift */; };
 		AACD5EEB2BF7350E00064734 /* SideBarContentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACD5EEA2BF7350E00064734 /* SideBarContentTableHeaderView.swift */; };
 		AACD5EEE2BF75A4A00064734 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACD5EED2BF75A4A00064734 /* Double.swift */; };
@@ -64,6 +66,8 @@
 		AAA345DD2BF99E38002BAF2D /* SideBarContentSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentSectionHeaderView.swift; sourceTree = "<group>"; };
 		AAA940A32BED23F2002F139A /* Bill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bill.swift; sourceTree = "<group>"; };
 		AAACD3E62BF77B00006917D2 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		AAB9CE562C29C1DB004CF5BA /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		AAB9CE582C2A13FE004CF5BA /* BillUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillUseCase.swift; sourceTree = "<group>"; };
 		AABF41852BF177F30089FCA1 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		AACD5EEA2BF7350E00064734 /* SideBarContentTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarContentTableHeaderView.swift; sourceTree = "<group>"; };
 		AACD5EED2BF75A4A00064734 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 				AAA940A02BED23D6002F139A /* Domain */,
 				AA1D78D92BE8C13000B3ECC1 /* Modules */,
 				AA10D9372BF41D5500DE1F0C /* ItemFactory.swift */,
+				AAB9CE582C2A13FE004CF5BA /* BillUseCase.swift */,
 				AA1D78C52BE8C0FD00B3ECC1 /* AppDelegate.swift */,
 				AA1D78C72BE8C0FD00B3ECC1 /* SceneDelegate.swift */,
 				AA1D78CE2BE8C0FE00B3ECC1 /* Assets.xcassets */,
@@ -209,6 +214,7 @@
 				AAACD3E62BF77B00006917D2 /* UIView.swift */,
 				AAA345D72BF8D84D002BAF2D /* UIButton.swift */,
 				AA8FFA962C1EF8140079C594 /* Date.swift */,
+				AAB9CE562C29C1DB004CF5BA /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -286,11 +292,13 @@
 				AACD5EF02BF76A2D00064734 /* UILabel.swift in Sources */,
 				AA2C3CF22BECC7E900292347 /* SideBarContentViewController.swift in Sources */,
 				AA1FA1B32BF2BCDA00A6D1FC /* Item.swift in Sources */,
+				AAB9CE572C29C1DB004CF5BA /* String.swift in Sources */,
 				AACD5EEB2BF7350E00064734 /* SideBarContentTableHeaderView.swift in Sources */,
 				AA2C3CF02BECC78800292347 /* SideBarMenuViewController.swift in Sources */,
 				AA60FB7E2BF396510007DD5F /* BillRow.swift in Sources */,
 				AABF41862BF177F30089FCA1 /* StatusView.swift in Sources */,
 				AA8FFA952C1EF0CD0079C594 /* HistoricActionsViewController.swift in Sources */,
+				AAB9CE592C2A13FE004CF5BA /* BillUseCase.swift in Sources */,
 				AA8704C82BF79CDE000A9738 /* ChargeBillViewController.swift in Sources */,
 				AA10D93B2BF41F1200DE1F0C /* SideBarContentTableCell.swift in Sources */,
 				AA8704CA2BF7A81F000A9738 /* ChargeBillTableCell.swift in Sources */,
