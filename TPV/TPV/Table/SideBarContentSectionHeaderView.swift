@@ -67,7 +67,7 @@ class SideBarContentSectionHeaderView: UIView {
         titleLabel = UILabel()
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = category.rawValue
+        titleLabel.text = category.displayText
         titleLabel.font = UIFont.systemFont(ofSize: 24,
                                             weight: .semibold)
         setupTitleLabelConstraints()

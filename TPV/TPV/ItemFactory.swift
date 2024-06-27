@@ -111,5 +111,12 @@ class ItemFactory {
     enum Category: String, CaseIterable {
         case beers = "beers"
         case other = "other"
+
+        var displayText: String {
+            switch self {
+            case .beers: return "Cervezas"
+            case .other: return "Otros"
+            }
+        }
     }
 }
