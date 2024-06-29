@@ -20,8 +20,15 @@ class SideBarViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupViews()
+        Task {
+            do {
+                bills = try await BillUseCase().getBills()
+                setupViews()
+            } catch {
+                print("🔴 Error SideBarViewcontroller: getBills()")
+            }
+        }
     }
 
     // MARK: - Functions
@@ -75,7 +82,7 @@ extension SideBarViewController: SideBarMenuViewControllerDelegate {
     }
 }
 
-// SideBarMenuViewControllerDelegate
+// SideBarContentViewControllerDelegate
 
 extension SideBarViewController: SideBarContentViewControllerDelegate {
     func selectedTagDidChange(selectedTag: SideBarContentViewController.SideBarContentTag, for billId: Bill.ID) {
